@@ -70,6 +70,8 @@ individee.initiateDownload = function (url, btnId, timeout, tooltipLastingLonger
                                 }
                                 timerRunning = false;
                             });
+                    } else {
+                        console.warn("The task is not done");
                     }
                 }
                 timer++;
@@ -84,7 +86,8 @@ individee.initiateDownload = function (url, btnId, timeout, tooltipLastingLonger
     function saveFileFromUrl(url) {
         return new Promise(function (resolve, reject) {
             const xhr = new XMLHttpRequest();
-            xhr.open(this.method, url);
+            // xhr.open(this.method, url);
+            xhr.open('POST', url);
             xhr.setRequestHeader('Content-type', 'application/json');
             xhr.responseType = 'blob';
             xhr.onload = function () {
@@ -94,7 +97,6 @@ individee.initiateDownload = function (url, btnId, timeout, tooltipLastingLonger
                 reject({message: "Timed out", timeout: true});
             };
             xhr.onerror = reject;
-            xhr.open('POST', url);
             xhr.send();
         }).then(function (xhr) {
             const contentDisposition = xhr.getResponseHeader('Content-Disposition');

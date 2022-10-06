@@ -67,7 +67,7 @@ public class TaskService {
                 if(future.isCancelled()){
                     LoggerFactory.getLogger(getClass()).info("Future " + key + " got canceled");
                 }
-                LoggerFactory.getLogger(getClass()).info("Future " + key + ": " + future.isDone());
+                LoggerFactory.getLogger(getClass()).info("Future " + key + " is done: " + future.isDone());
                 return (future.isDone() || future.isCancelled());
             } else {
                 LoggerFactory.getLogger(getClass()).info("Missing future " + key);

@@ -32,6 +32,7 @@ public class FileTask implements Callable<File> {
 
     private final String taskId;
     private final String file;
+    private String pageUrl;
     private final WicketApplication application;
     private final WebSession session;
     private final RequestCycle requestCycle;
@@ -40,13 +41,15 @@ public class FileTask implements Callable<File> {
     /**
      * Instantiates a new Abstract task.
      *
-     * @param taskId   the task id
+     * @param taskId  the task id
      * @param file
+     * @param pageUrl
      */
-    public FileTask(String taskId, String file) {
+    public FileTask(String taskId, String file, String pageUrl) {
         super();
         this.taskId = taskId != null ? taskId : UUID.randomUUID().toString();
         this.file = file;
+        this.pageUrl = pageUrl;
         application = Application.exists() ? (WicketApplication) Application.get() : null;
         session = WebSession.exists() ? WebSession.get() : null;
         requestCycle = RequestCycle.get();
@@ -73,8 +76,10 @@ public class FileTask implements Callable<File> {
      */
     protected File executeTask() throws Exception{
         File tmpFile = File.createTempFile("async", ".tmp");
-        if(file.equalsIgnoreCase("rendered.html")){
-            FileUtils.write(tmpFile, ComponentRenderer.renderPage(new PageProvider(PageToRender.class, new PageParameters())).toString(), StandardCharsets.UTF_8);
+
+        if(file.equalsIgnoreCase("render")) { // use 'file' as a command
+            tmpFile = new File(new File(System.getProperty("java.io.tmpdir")), taskId + ".html");
+            FileUtils.write(tmpFile, ComponentRenderer.renderPage(new PageProvider(new PageToRender(pageUrl))).toString(), StandardCharsets.UTF_8);
         }else if(file.equalsIgnoreCase("delayed.txt")
         || file.equalsIgnoreCase("non-delayed.txt")){
             LoadableModel model = new LoadableModel(Model.of("Lorem ipsum"));
