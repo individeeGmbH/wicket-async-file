@@ -118,7 +118,7 @@ public class DownloadFileResource extends AbstractResource {
     void startFileCreation(ResourceResponse resourceResponse, Attributes attributes) throws Exception {
         String taskId = UUID.randomUUID().toString();
         ((WicketApplication) Application.get()).getTaskManager().execute(taskId,
-                new FileTask(taskId, attributes.getParameters().get("file").toString()));
+                new FileTask(taskId, attributes.getParameters().get("file").toString(), null));
         sendSimpleResponse("taskId", taskId, resourceResponse);
     }
 }

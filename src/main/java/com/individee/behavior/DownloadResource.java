@@ -1,7 +1,5 @@
 package com.individee.behavior;
 
-import com.individee.WicketApplication;
-import org.apache.wicket.Application;
 import org.apache.wicket.request.resource.AbstractResource;
 import org.apache.wicket.request.resource.ContentDisposition;
 import org.apache.wicket.request.resource.ResourceStreamResource;
